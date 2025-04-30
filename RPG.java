@@ -2,8 +2,8 @@ import java.util.Scanner;
 
 public class RPG {
 
-    static class Character {
-        String name = "Character";
+    static class Player {
+        String name = "Player";
         int health = 50;
         int mana = 10;
         int strength = 3;
@@ -55,115 +55,118 @@ public class RPG {
     }
 
     public static void main(String[] args) {
+
         Scanner scanner = new Scanner(System.in);
+        Player player = new Player();
 
-        boolean playerIsAlive = true;
-
-        Character character = new Character();
         Goblin goblin = new Goblin();
 
         System.out.println("\nA " + goblin.name + " appears in your way.");
 
-        combat: while (goblin.health > 0 && character.health > 0) {
+        combat: while (goblin.health > 0 && player.health > 0) {
 
             int turn = 1;
-            System.out.println("Turn " + turn + " | " + "Your HP: " + character.health + " MP: " + character.mana);
+            System.out.println("\n---------------------------------------\nTurn " + turn + " | " + "Your HP: " + player.health + " MP: " + player.mana);
             System.out.println(goblin.name + " HP: " + goblin.health);
             System.out.println("\nWhat do you want to do?");
             System.out.println("[1] Attack | [2] Spellbook | [3] Escape");
-            String action = scanner.nextLine();
+            String action = scanner.nextLine().toLowerCase();
 
             switch (action) {
 
                 case "1": // Attack
-                    int characterAttack = character.attack();
+                    int playerAttack = player.attack();
                     int goblinDodge = goblin.dodge();
 
-                    if (characterAttack <= goblinDodge) {
+                    if (playerAttack <= goblinDodge) {
                         System.out.println("\nYour attack missed.");
 
                         int goblinAttack = goblin.attack();
-                        int characterDodge = character.dodge();
+                        int playerDodge = player.dodge();
 
-                        if (goblinAttack <= characterDodge) {
+                        if (goblinAttack <= playerDodge) {
                             System.out.println("\n" + goblin.name + "\'s attack missed.");
                         } else {
                             int goblinDamage = goblin.attackDamage();
-                            character.health -= goblinDamage;
+                            player.health -= goblinDamage;
                             System.out.println("\n" + goblin.name + " hits you for " + goblinDamage + " damage.");
                         }
 
                     } else {
-                        int characterDamage = character.attackDamage();
-                        goblin.health -= characterDamage;
-                        System.out.println("\nYou strike the " + goblin.name + " for " + characterDamage + " damage.");
+                        int playerDamage = player.attackDamage();
+                        goblin.health -= playerDamage;
+                        System.out.println("\nYou strike the " + goblin.name + " for " + playerDamage + " damage.");
 
                         int goblinAttack = goblin.attack();
-                        int characterDodge = character.dodge();
+                        int playerDodge = player.dodge();
 
-                        if (goblinAttack <= characterDodge) {
+                        if (goblinAttack <= playerDodge) {
                             System.out.println("\n" + goblin.name + "\'s attack missed.");
                         } else {
                             int goblinDamage = goblin.attackDamage();
-                            character.health -= goblinDamage;
+                            player.health -= goblinDamage;
                             System.out.println("\n" + goblin.name + " hits you for " + goblinDamage + " damage.");
                         }
                     }
                     break;
 
                 case "2": // Spellbook
-                System.out.println("\nWhat do you want to do?");
-                System.out.println("[1] Thunderbolt | [2] Fireball | [3] Return");
-                String spell = scanner.nextLine();
+                    System.out.println("\nWhat do you want to do?");
+                    System.out.println("[1] Thunderbolt | [2] Fireball | [X] Return");
+                    String spell = scanner.nextLine().toLowerCase();
 
                     switch (spell) {
                         case "1": // Thunderbolt
-                            if (character.mana < 3) {
+                            if (player.mana < 3) {
                                 System.out.println("Not enough MP, Thunderbolt requires 3 mana.");
                             } else {
-                                int characterDamage = character.thunderbolt();
-                                goblin.health -= characterDamage;
+                                int playerDamage = player.thunderbolt();
+                                goblin.health -= playerDamage;
                                 int manaCost = 3;
-                                character.mana -= manaCost;
+                                player.mana -= manaCost;
 
-                                System.out.println("\nYour thunderbolt strikes the " + goblin.name + " for " + characterDamage + " damage.");
+                                System.out.println("\nYour thunderbolt strikes the " + goblin.name + " for "
+                                        + playerDamage + " damage.");
 
                                 int goblinAttack = goblin.attack();
-                                int characterDodge = character.dodge();
+                                int playerDodge = player.dodge();
 
-                                if (goblinAttack <= characterDodge) {
+                                if (goblinAttack <= playerDodge) {
                                     System.out.println("\n" + goblin.name + "\'s attack missed.");
                                 } else {
                                     int goblinDamage = goblin.attackDamage();
-                                    character.health -= goblinDamage;
-                                    System.out.println("\n" + goblin.name + " hits you for " + goblinDamage + " damage.");
+                                    player.health -= goblinDamage;
+                                    System.out
+                                            .println("\n" + goblin.name + " hits you for " + goblinDamage + " damage.");
                                 }
                             }
                             break;
                         case "2": // Fireball
-                            if (character.mana < 7) {
+                            if (player.mana < 7) {
                                 System.out.println("Not enough MP, Fireball requires 7 mana.");
                             } else {
-                                int characterDamage = character.fireball();
-                                goblin.health -= characterDamage;
+                                int playerDamage = player.fireball();
+                                goblin.health -= playerDamage;
                                 int manaCost = 7;
-                                character.mana -= manaCost;
+                                player.mana -= manaCost;
 
-                                System.out.println("\nYour fireball burns the " + goblin.name + " for " + characterDamage + " damage.");
+                                System.out.println("\nYour fireball burns the " + goblin.name + " for " + playerDamage
+                                        + " damage.");
 
                                 int goblinAttack = goblin.attack();
-                                int characterDodge = character.dodge();
+                                int playerDodge = player.dodge();
 
-                                if (goblinAttack <= characterDodge) {
+                                if (goblinAttack <= playerDodge) {
                                     System.out.println("\n" + goblin.name + "\'s attack missed.");
                                 } else {
                                     int goblinDamage = goblin.attackDamage();
-                                    character.health -= goblinDamage;
-                                    System.out.println("\n" + goblin.name + " hits you for " + goblinDamage + " damage.");
+                                    player.health -= goblinDamage;
+                                    System.out
+                                            .println("\n" + goblin.name + " hits you for " + goblinDamage + " damage.");
                                 }
                             }
                             break;
-                        case "3": // Return
+                        case "x": // Return
                             break;
                         default:
                             System.out.println("\nInvalid input.");
@@ -172,7 +175,7 @@ public class RPG {
                     break;
 
                 case "3": // Escape
-                    int escape = character.escape();
+                    int escape = player.escape();
                     System.out.println("\nYou have escaped the " + goblin.name + ".");
                     break combat;
                 default:
@@ -183,7 +186,7 @@ public class RPG {
 
         if (goblin.health <= 0) {
             System.out.println("\nYou have slain the " + goblin.name + ".");
-        } else if (character.health <= 0) {
+        } else if (player.health <= 0) {
             System.out.println("\nYou have been slain by the " + goblin.name + ".");
         }
     }
